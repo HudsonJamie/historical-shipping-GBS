@@ -13,7 +13,7 @@
 
 [For R scripts for production of genomic diversity indices for both species.](https://github.com/HudsonJamie/historical-shipping-GBS/tree/main/diveRsity)
 
-[For R scripts relating to the DAPC analysis.](https://github.com/HudsonJamie/historical-shipping-GBS/tree/main/adegent)
+[For R scripts relating to the DAPC analysis.](https://github.com/HudsonJamie/historical-shipping-GBS/tree/main/DAPC)
 
 [For R scripts to reproduce the Fst heatmaps.](https://github.com/HudsonJamie/historical-shipping-GBS/tree/main/hierfstat)
 
