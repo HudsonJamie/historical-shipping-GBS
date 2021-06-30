@@ -1,4 +1,5 @@
 # historical-shipping-GBS
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5046438.svg)](https://doi.org/10.5281/zenodo.5046438)
 
 # This repository accompanies the manuscript titled: **The reconstruction of invasion histories with genomic data in light of differing levels of anthropogenic transport** which is currently under review.
 
