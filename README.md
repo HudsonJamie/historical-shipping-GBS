@@ -1,6 +1,8 @@
 # historical-shipping-GBS
 
-## This repository accompanies the manuscript **The reconstruction of invasion histories with genomic data in light of differing levels of anthropogenic transport** which is currently under review.
+# This repository accompanies the manuscript titled: **The reconstruction of invasion histories with genomic data in light of differing levels of anthropogenic transport** which is currently under review.
+
+## *As such, these scripts should be treated as under review too, and are subject to change.*
 
 - The raw fastq files produced by GBS have been deposited in the European Nucleotide Archive (ENA) at EMBL-EBI under accession number PRJEB46018 (https://www.ebi.ac.uk/ena/browser/view/PRJEB46018).
 
