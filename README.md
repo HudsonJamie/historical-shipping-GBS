@@ -11,10 +11,10 @@
 
 - Final .vcf files for both species were converted to different formats for the required downstream analyses using [PGDSpider](http://www.cmpg.unibe.ch/software/PGDSpider/).
 
-For R scripts for production of genomic diversity indices for both species.
+[For R scripts for production of genomic diversity indices for both species.](https://github.com/HudsonJamie/historical-shipping-GBS/tree/main/diveRsity)
 
-For R scripts relating to the DAPC analysis.
+[For R scripts relating to the DAPC analysis.](https://github.com/HudsonJamie/historical-shipping-GBS/tree/main/adegent)
 
-For R scripts to reproduce the Fst heatmaps.
+[For R scripts to reproduce the Fst heatmaps.](https://github.com/HudsonJamie/historical-shipping-GBS/tree/main/hierfstat)
 
-For R scripts for scatter plots of shipping intensity vs Fst values.
+[R scripts for scatter plots of shipping intensity vs Fst values.](https://github.com/HudsonJamie/historical-shipping-GBS/tree/main/ship_vs_genomic)
