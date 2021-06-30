@@ -1,0 +1,7 @@
+"Aust" "Med Sea" "NE Atlantic" "NE Pacific" "NW Pacific" "S Africa"
+"Aust" 0 14 15 16 31 3
+"Med Sea" 15 0 460 25 52 9
+"NE Atlantic" 16 452 0 24 38 12
+"NE Pacific" 16 15 24 0 137 0
+"NW Pacific" 26 31 33 115 0 3
+"S Africa" 3 15 17 2 5 0
