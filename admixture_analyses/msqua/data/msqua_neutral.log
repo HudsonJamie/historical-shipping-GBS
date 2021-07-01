@@ -1,0 +1,44 @@
+
+@----------------------------------------------------------@
+|        PLINK!       |     v1.07      |   10/Aug/2009     |
+|----------------------------------------------------------|
+|  (C) 2009 Shaun Purcell, GNU General Public License, v2  |
+|----------------------------------------------------------|
+|  For documentation, citation & bug-report instructions:  |
+|        http://pngu.mgh.harvard.edu/purcell/plink/        |
+@----------------------------------------------------------@
+
+Skipping web check... [ --noweb ] 
+Writing this text to log file [ msqua_neutral.log ]
+Analysis started: Thu Feb 25 16:36:17 2021
+
+Options in effect:
+	--file msqua_neutral
+	--make-bed
+	--out msqua_neutral
+	--noweb
+
+1994 (of 1994) markers to be included from [ msqua_neutral.map ]
+Warning, found 280 individuals with ambiguous sex codes
+Writing list of these individuals to [ msqua_neutral.nosex ]
+280 individuals read from [ msqua_neutral.ped ] 
+0 individuals with nonmissing phenotypes
+Assuming a disease phenotype (1=unaff, 2=aff, 0=miss)
+Missing phenotype value is also -9
+0 cases, 0 controls and 280 missing
+0 males, 0 females, and 280 of unspecified sex
+Before frequency and genotyping pruning, there are 1994 SNPs
+280 founders and 0 non-founders found
+Total genotyping rate in remaining individuals is 0.735917
+0 SNPs failed missingness test ( GENO > 1 )
+0 SNPs failed frequency test ( MAF < 0 )
+After frequency and genotyping pruning, there are 1994 SNPs
+After filtering, 0 cases, 0 controls and 280 missing
+After filtering, 0 males, 0 females, and 280 of unspecified sex
+Writing pedigree information to [ msqua_neutral.fam ] 
+Writing map (extended format) information to [ msqua_neutral.bim ] 
+Writing genotype bitfile to [ msqua_neutral.bed ] 
+Using (default) SNP-major mode
+
+Analysis finished: Thu Feb 25 16:36:17 2021
+
