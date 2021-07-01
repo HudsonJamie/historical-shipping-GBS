@@ -9,7 +9,7 @@
 
 - These raw reads were analysed using [ipyrad](https://ipyrad.readthedocs.io/faq.html), and the output VCF files were further filtered using [vcftools](https://vcftools.github.io/man_latest.html) as per the manuscript. 
 
-- Final .vcf files for both species were converted to different formats for the required downstream analyses using [PGDSpider](http://www.cmpg.unibe.ch/software/PGDSpider/).
+- Final .vcf files for both species were converted to different formats for the required downstream analyses using [PGDSpider](http://www.cmpg.unibe.ch/software/PGDSpider/). `mqua_pops_file.txt` and `crob_pops_file.txt` are the pop files used for PGDSpider conversion.
 
 [For R scripts for production of genomic diversity indices for both species.](https://github.com/HudsonJamie/historical-shipping-GBS/tree/main/diveRsity)
 
