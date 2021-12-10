@@ -10,7 +10,7 @@ library(tidyverse)
 
 # Input data --------------------------------------------------------------
 
-neutral.gen <- read.genepop("./data/crob_neutral.gen", ncode = 3) # read in genepop file
+neutral.gen <- read.genepop("../../data/crob_neutral.gen", ncode = 3) # read in genepop file
 
 neutral.hierfstat <- genind2hierfstat(neutral.gen) #convert genind to hierfstat df
 

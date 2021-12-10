@@ -10,11 +10,11 @@ library(ggtext)
 
 # Fis ---------------------------------------------------------------------
 
-popgen_stats <- divBasic("../adegenet/crob/data/crob_neutral.gen", outfile = NULL, gp = 3, 
+popgen_stats <- divBasic("../../data/crob_neutral.gen", outfile = NULL, gp = 3, 
                      bootstraps = 100)
 
-save(popgen_stats, file = "crob_popgen_stats.RData") # something suitable
-load("~/jah1g20/OneDrive - University of Southampton/Steves_samples/diveRsity/crob_popgen_stats.RData")
+save(popgen_stats, file = "../../data/crob_popgen_stats.RData") # something suitable
+# load("../../data/crob_popgen_stats.RData")
 
 ###explore results stored in variable popgen_stats
 names(popgen_stats)
@@ -194,7 +194,7 @@ indices <- cbind(mean_He, mean_Ho) %>%
 
 # Count number of private alleles
 
-priv_allele.crob <- readGenepop(infile = "../adegenet/crob/data/crob_neutral.gen", gp = 3)
+priv_allele.crob <- readGenepop(infile = "../../data/crob_neutral.gen", gp = 3)
 priv_allele.crob$pop_names <- c("BU", "EL", "FU", "HB", "KN", "MEL",
                                  "NEL", "PE", "PLY", "PO", "RAV", "SB",
                                  "TB", "TO")

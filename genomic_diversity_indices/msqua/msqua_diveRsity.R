@@ -6,15 +6,15 @@
 library(diveRsity)
 library(adegenet)
 library(tidyverse)
+library(ggtext)
 
 # Fis ---------------------------------------------------------------------
 
-popgen_stats <- divBasic("../adegenet/microcosmus/data/msqua_neutral.gen", outfile = NULL, gp = 3, 
+popgen_stats <- divBasic("../../data/msqua_neutral.gen", outfile = NULL, gp = 3, 
                          bootstraps = 100)
 
-save(popgen_stats, file = "msqua_popgen_stats.RData") # something suitable
-load("divBasic_msqua_neutral_diveRsity.RData")
-load("~/jah1g20/OneDrive - University of Southampton/Steves_samples/diveRsity/msqua_popgen_stats.RData")
+save(popgen_stats, file = "../../data/msqua_popgen_stats.RData") # something suitable
+# load("../../data/msqua_popgen_stats.RData")
 
 ###explore results stored in variable popgen_stats
 names(popgen_stats)
@@ -32,36 +32,34 @@ ciTable <- lapply(popgen_stats$fis, function(x){
 ciTable <- as.data.frame(do.call("rbind", ciTable))
 
 ciTable <- ciTable %>% 
-  add_column(pops = c("AL", "AR", "AZ", "BF", "BU", "CA",
-               "CAD", "CHI", "CU", "EL", "KNY", "MAN",
-               "MAT", "MB", "MEL", "PA", "PB", "PE", 
-               "RB", "SA")) %>% 
+  add_column(pops = c("BUS", "EL", "FK", "HB", "KNY", "MEL",
+                      "NEL", "PE", "PLY", "PO", "RAV", "SB",
+                      "TB", "TG")) %>% 
   rename("Fis" = V1,
          "lower" = V2, 
          "upper" = V3)
 
+
 ciTable$pop_names <- factor(ciTable$pops, 
-                            levels=c("BU", "AL", "MEL", "MAN",
-                                     "BF", "AZ", "SA", "CA",
-                                     "CAD", "CHI", "CU",
-                                     "PB", "MAT", "AR", "MB",
-                                     "KNY", "PE", "PA",
-                                     "EL", "RB"))
+                            levels=c("FK", "BUS", "PO", "TG",
+                                     "NEL", "MEL",
+                                     "KNY", "PE", "EL",
+                                     "SB", "TB", "HB",
+                                     "RAV", "PLY"))
 
 ciTable <- ciTable %>% 
   arrange(pop_names) %>% 
-  add_column(group = c(rep("Native", 4), rep("Introduced", 16)))
+  add_column(group = c(rep("Native", 4), rep("Introduced", 10)))
 
 ciTable$group <- factor(ciTable$group, 
                         levels=c("Native", "Introduced"))
 
-# plot results
-# plot results
+# plot results - NB not used in manuscript.
 ggplot(ciTable, aes(x = pop_names, y = Fis)) +
   geom_point(size = 6, aes(colour = group)) + 
   geom_errorbar(aes(ymin = lower, ymax = upper, colour = group), width = 0, size = 1.5) +
-  scale_color_manual(values = c("#2e9e8f", "#e9c166"),
-                     labels = c("Native", "Introduced")) +
+  scale_color_manual(values = c("#cc99ff", "#e9c166"),
+                     labels = c("Putatively native", "Introduced")) +
   labs(x = "Site names",
        y = "F<sub>IS</sub> value") +
   theme_bw() +
@@ -71,111 +69,113 @@ ggplot(ciTable, aes(x = pop_names, y = Fis)) +
         axis.title = element_markdown(size = 16),
         axis.title.y = element_markdown(size = 16),
         legend.title = element_blank(),
-        legend.position = c(0.9, 0.9),
+        legend.position = c(0.5, 0.9),
         legend.text = element_text(size = 14))
 
-ggsave(paste0("msqua_Fis_values",
+ggsave(paste0("crob_Fis_values",
               format(Sys.time(), "%m%Y"),
               ".png"),
        dpi = 320,
        type = "cairo-png")
-
 #Saving 12.9 x 8.35 in image
+
 
 # Extract Ho and He too
 Ho <- as.data.frame(popgen_stats$Ho)
 He <- as.data.frame(popgen_stats$He)
 
 mean_Ho <- Ho %>% summarise_all(mean, na.rm = T)
-colnames(mean_Ho) <- c("AL", "AR", "AZ", "BF", "BU", "CA",
-                       "CAD", "CHI", "CU", "EL", "KN", "MAN",
-                       "MAT", "MB", "MEL", "PA", "PB", "PE", 
-                       "RB", "SA") # same order as input file
+colnames(mean_Ho) <- c("BU", "EL", "FU", "HB", "KN", "MEL",
+                       "NEL", "PE", "PLY", "PO", "RAV", "SB",
+                       "TB", "TO") # same order as input file
+
 mean_Ho <- t(mean_Ho)
 mean_Ho <- as_tibble(mean_Ho)
 
 mean_Ho <- mean_Ho %>% 
   rename("Ho" = V1) %>% 
-  add_column(pops = c("BU", "AL", "MEL", "MAN",
-                      "BF", "AZ", "SA", "CA",
-                      "CAD", "CHI", "CU",
-                      "PB", "MAT", "AR", "MB",
-                      "KNY", "PE", "PA",
-                      "EL", "RB"))
+  add_column(pops = c("BUS", "EL", "FK", "HB", "KNY", "MEL",
+                      "NEL", "PE", "PLY", "PO", "RAV", "SB",
+                      "TB", "TG"))
 
 mean_Ho$pops <- factor(mean_Ho$pops, 
-                       levels = c("BU", "AL", "MEL", "MAN",
-                                  "BF", "AZ", "SA", "CA",
-                                  "CAD", "CHI", "CU",
-                                  "PB", "MAT", "AR", "MB",
-                                  "KNY", "PE", "PA",
-                                  "EL", "RB"))
+                       levels=c("FK", "BUS", "PO", "TG",
+                                "MEL", "NEL", "RAV", "PLY",
+                                "SB", "TB", "HB",
+                                "KNY", "PE", "EL"))
 
 mean_Ho <- mean_Ho %>% 
   arrange(pops) 
 
-msqua_mean_Ho <- mean_Ho %>% 
+crob_mean_Ho <- mean_Ho %>% 
   arrange(pops) %>% 
-  add_column(group = c(rep("Native", 4), rep("Introduced", 16)))
+  add_column(group = c(rep("Native", 4), rep("Introduced", 10)))
 
-(msqua_ho <- ggplot(msqua_mean_Ho, aes(x = pops, y = Ho)) +
+crob_mean_Ho$group <- factor(crob_mean_Ho$group, 
+                             levels=c("Native", "Introduced"))
+
+(crob_ho <- ggplot(crob_mean_Ho, aes(x = pops, y = Ho)) +
     geom_point(size = 4, aes(colour = group)) +
-    scale_color_manual(values = c("#2e9e8f", "#e9c166"),
-                       labels = c("Native", "Introduced")) +
+    scale_color_manual(values = c("#cc99ff", "#e9c166"),
+                       labels = c("Putatively native", "Introduced")) +
     labs(x = "Site names",
          y = "Ho") +
-    lims(y = c(0.055, 0.085)) +
+    lims(y = c(0.09, 0.145)) +
     theme_bw() +
     theme(axis.text = element_text(size = 14),
           axis.text.x = element_text(angle = 45,
                                      vjust = 0.6),
-          panel.grid.minor = element_blank(),
+          panel.grid.major.y = element_line(colour = "black",
+                                            size = 0.1),
           panel.grid.major.x = element_blank(),
           axis.title = element_markdown(size = 16),
           axis.title.y = element_markdown(size = 16),
           legend.title = element_blank(),
-          legend.position = c(0.85, 0.1),
-          legend.text = element_text(size = 10)))
+          legend.position = c(0.85, 0.93),
+          legend.text = element_text(size = 15)))
+
+
+
 
 mean_He <- He %>% summarise_all(mean, na.rm = T)
-colnames(mean_He) <- c("AL", "AR", "AZ", "BF", "BU", "CA",
-                       "CAD", "CHI", "CU", "EL", "KN", "MAN",
-                       "MAT", "MB", "MEL", "PA", "PB", "PE", 
-                       "RB", "SA") # same order as input file
+colnames(mean_He) <- c("BU", "EL", "FU", "HB", "KN", "MEL",
+                       "NEL", "PE", "PLY", "PO", "RAV", "SB",
+                       "TB", "TO") # same order as input file
 mean_He <- t(mean_He)
 mean_He <- as_tibble(mean_He)
 
+
+
 mean_He <- mean_He %>% 
   rename("He" = V1) %>% 
-  add_column(pops = c("BU", "AL", "MEL", "MAN",
-                      "BF", "AZ", "SA", "CA",
-                      "CAD", "CHI", "CU",
-                      "PB", "MAT", "AR", "MB",
-                      "KNY", "PE", "PA",
-                      "EL", "RB"))
+  add_column(pops = c("BUS", "EL", "FK", "HB", "KNY", "MEL",
+                      "NEL", "PE", "PLY", "PO", "RAV", "SB",
+                      "TB", "TG"))
 
 mean_He$pops <- factor(mean_He$pops, 
-                       levels = c("BU", "AL", "MEL", "MAN",
-                                  "BF", "AZ", "SA", "CA",
-                                  "CAD", "CHI", "CU",
-                                  "PB", "MAT", "AR", "MB",
-                                  "KNY", "PE", "PA",
-                                  "EL", "RB"))
+                       levels=c("FK", "BUS", "PO", "TG",
+                                "NEL", "MEL", 
+                                "KNY", "PE", "EL",
+                                "SB", "TB", "HB",
+                                "RAV", "PLY"))
 
 mean_He <- mean_He %>% 
   arrange(pops) 
 
-msqua_mean_He <- mean_He %>% 
+crob_mean_He <- mean_He %>% 
   arrange(pops) %>% 
-  add_column(group = c(rep("Native", 4), rep("Introduced", 16)))
+  add_column(group = c(rep("Native", 4), rep("Introduced", 10)))
 
-(msqua_he <- ggplot(msqua_mean_He, aes(x = pops, y = He)) +
+crob_mean_He$group <- factor(crob_mean_He$group, 
+                             levels=c("Native", "Introduced"))
+
+(crob_he <- ggplot(crob_mean_He, aes(x = pops, y = He)) +
     geom_point(size = 4, aes(colour = group)) +
-    scale_color_manual(values = c("#2e9e8f", "#e9c166"),
-                       labels = c("Native", "Introduced")) +
+    scale_color_manual(values = c("#cc99ff", "#e9c166"),
+                       labels = c("Putatively native", "Introduced")) +
     labs(x = "Site names",
          y = "He") +
-    lims(y = c(0.09, 0.14)) +
+    lims(y = c(0.1, 0.25)) +
     theme_bw() +
     theme(axis.text = element_text(size = 14),
           axis.text.x = element_text(angle = 45,
@@ -188,44 +188,43 @@ msqua_mean_He <- mean_He %>%
           legend.title = element_blank(),
           legend.position = "top",
           legend.text = element_text(size = 15)))
+
+indices <- cbind(mean_He, mean_Ho) %>% 
+  select(-c(pops))
+
 # Count number of private alleles
 
-priv_allele.msqua <- readGenepop(infile = "../adegenet/microcosmus/data/msqua_neutral.gen", gp = 3)
-priv_allele.msqua$pop_names <- c("AL", "AR", "AZ", "BF", "BU", "CA",
-                                "CAD", "CHI", "CU", "EL", "KN", "MAN",
-                                "MAT", "MB", "MEL", "PA", "PB", "PE", 
-                                "RB", "SA")
+priv_allele.crob <- readGenepop(infile = "../../data/msqua_neutral.gen", gp = 3)
+priv_allele.crob$pop_names <- c("BU", "EL", "FU", "HB", "KN", "MEL",
+                                "NEL", "PE", "PLY", "PO", "RAV", "SB",
+                                "TB", "TO")
 
-priv_allele.msqua$pop <- as.factor(c(rep("AL", 15), rep("AR", 15), rep("AZ", 20),
-                                    rep("BF", 18), rep("BU", 16), rep("CA", 9),
-                                    rep("CAD", 13), rep("CHI", 16), rep("CU", 15),
-                                    rep("EL", 15), rep("KN", 7), rep("MAN", 14),
-                                    rep("MAT", 15), rep("MB", 12), rep("MEL", 17),
-                                    rep("PA", 10), rep("PB", 13), rep("PE", 13),
-                                    rep("RB", 17), rep("SA", 10)))
+priv_allele.crob$pop <- as.factor(c(rep("BU", 9), rep("EL", 16), rep("FU", 15),
+                                    rep("HB", 15), rep("KN", 15), rep("MEL", 15),
+                                    rep("NEL", 17), rep("PE", 16), rep("PLY", 15),
+                                    rep("PO", 16), rep("RAV", 6), rep("SB", 12),
+                                    rep("TB", 16), rep("TO", 7)))
 
 
-allele.freq.msqua <- priv_allele.msqua$allele_freq
+allele.freq.crob <- priv_allele.crob$allele_freq
 
-length(allele.freq.msqua) # number of alleles
+length(allele.freq.crob) # number of alleles
 
-msqua.allele.zeros <- lapply(allele.freq.msqua, function(x) which(x==0)) # Tells us which population and allele combination have a frequency of 0
+crob.allele.zeros <- lapply(allele.freq.crob, function(x) which(x==0)) # Tells us which population and allele combination have a frequency of 0
 
-msqua.private.alleles <- lapply(msqua.allele.zeros, function(x) which(length(x) == length(priv_allele.msqua$pop_names) - 1)) # 12 zeros means only one pop has that allele
+crob.private.alleles <- lapply(crob.allele.zeros, function(x) which(length(x) == length(priv_allele.crob$pop_names) - 1)) # 12 zeros means only one pop has that allele
 
-length(which(msqua.private.alleles==1)) # Number of private alleles
+length(which(crob.private.alleles==1)) # Number of private alleles
 
-msqua.private.alleles.list <- allele.freq.msqua[which(msqua.private.alleles==1)]
+crob.private.alleles.list <- allele.freq.crob[which(crob.private.alleles==1)]
 
-private.alleles.df <- data.frame(matrix(unlist(msqua.private.alleles.list), nrow=length(msqua.private.alleles.list), byrow=TRUE))
+private.alleles.df <- data.frame(matrix(unlist(crob.private.alleles.list), nrow=length(crob.private.alleles.list), byrow=TRUE))
 
-colnames(private.alleles.df) <- as.factor(c(rep("AL", 2), rep("AR", 2), rep("AZ", 2),
-                                            rep("BF", 2), rep("BU", 2), rep("CA", 2),
-                                            rep("CAD", 2), rep("CHI", 2), rep("CU", 2),
-                                            rep("EL", 2), rep("KN", 2), rep("MAN", 2),
-                                            rep("MAT", 2), rep("MB", 2), rep("MEL", 2),
-                                            rep("PA", 2), rep("PB", 2), rep("PE", 2),
-                                            rep("RB", 2), rep("SA", 2)))
+colnames(private.alleles.df) <- as.factor(c(rep("BU", 2), rep("EL", 2), rep("FU", 2),
+                                            rep("HB", 2), rep("KN", 2), rep("MEL", 2),
+                                            rep("NEL", 2), rep("PE", 2), rep("PLY", 2),
+                                            rep("PO", 2), rep("RAV", 2), rep("SB", 2),
+                                            rep("TB", 2), rep("TO", 2)))
 
 private.alleles.df_2 <- private.alleles.df[seq(1, ncol(private.alleles.df),2)]
 
@@ -237,94 +236,70 @@ private_allele <- function(dataset, col_name) {
     summarise(count = sum(!!col_name != 0 & !!col_name != 1))
 }
 
-private_allele(private.alleles.df_2, AL) #15
-private_allele(private.alleles.df_2, AR) #7
-private_allele(private.alleles.df_2, AZ) #12
-private_allele(private.alleles.df_2, BF) #15
-private_allele(private.alleles.df_2, BU) #23
-private_allele(private.alleles.df_2, CA) #0
-private_allele(private.alleles.df_2, CAD) #1
-private_allele(private.alleles.df_2, CHI) #9
-private_allele(private.alleles.df_2, CU) #3
-private_allele(private.alleles.df_2, EL) #7
-private_allele(private.alleles.df_2, KN) #3
-private_allele(private.alleles.df_2, MAN) #78
-private_allele(private.alleles.df_2, MAT) #8
-private_allele(private.alleles.df_2, MB) #6
-private_allele(private.alleles.df_2, MEL) #9
-private_allele(private.alleles.df_2, PA) #8
-private_allele(private.alleles.df_2, PB) #8
-private_allele(private.alleles.df_2, PE) #2
-private_allele(private.alleles.df_2, RB) #8
-private_allele(private.alleles.df_2, SA) #2
+private_allele(private.alleles.df_2, BU) #4
+private_allele(private.alleles.df_2, EL) #54
+private_allele(private.alleles.df_2, FU) #19
+private_allele(private.alleles.df_2, HB) #11
+private_allele(private.alleles.df_2, KN) #35
+private_allele(private.alleles.df_2, MEL) #30
+private_allele(private.alleles.df_2, NEL) #62
+private_allele(private.alleles.df_2, PE) #58
+private_allele(private.alleles.df_2, PLY) #21
+private_allele(private.alleles.df_2, PO) #17
+private_allele(private.alleles.df_2, RAV) #1
+private_allele(private.alleles.df_2, SB) #11
+private_allele(private.alleles.df_2, TB) #16
+private_allele(private.alleles.df_2, TO) #0
 
 sessionInfo()
 
+
 # allelic_richness --------------------------------------------------------
 
-Ar <- as.data.frame(popgen_stats$Allelic_richness)
+crob_Ar <- as.data.frame(popgen_stats$Allelic_richness)
 
-mean_Ar <- Ar %>% summarise_all(mean, na.rm = T)
-colnames(mean_Ar) <- c("AL", "AR", "AZ", "BF", "BU", "CA",
-                       "CAD", "CHI", "CU", "EL", "KN", "MAN",
-                       "MAT", "MB", "MEL", "PA", "PB", "PE", 
-                       "RB", "SA") # same order as input file
+crob_mean_Ar <- crob_Ar %>% summarise_all(mean, na.rm = T)
+colnames(crob_mean_Ar) <- c("BU", "EL", "FU", "HB", "KN", "MEL",
+                            "NEL", "PE", "PLY", "PO", "RAV", "SB",
+                            "TB", "TO") # same order as input file
 
-mean_Ar <- t(mean_Ar)
-mean_Ar <- as_tibble(mean_Ar)
+crob_mean_Ar <- t(crob_mean_Ar)
+crob_mean_Ar <- as_tibble(crob_mean_Ar)
 
-mean_Ar <- mean_Ar %>% 
+crob_mean_Ar <- crob_mean_Ar %>% 
   rename("Ar" = V1) %>% 
-  add_column(pops = c("BU", "AL", "MEL", "MAN",
-                      "BF", "AZ", "SA", "CA",
-                      "CAD", "CHI", "CU",
-                      "PB", "MAT", "AR", "MB",
-                      "KNY", "PE", "PA",
-                      "EL", "RB"))
+  add_column(pops = c("BUS", "EL", "FK", "HB", "KNY", "MEL",
+                      "NEL", "PE", "PLY", "PO", "RAV", "SB",
+                      "TB", "TG"))
 
-mean_Ar$pops <- factor(mean_Ar$pops, 
-                       levels=c("BU", "AL", "MEL", "MAN",
-                                "BF", "AZ", "SA", "CA",
-                                "CAD", "CHI", "CU",
-                                "PB", "MAT", "AR", "MB",
-                                "KNY", "PE", "PA",
-                                "EL", "RB"))
+crob_mean_Ar$pops <- factor(crob_mean_Ar$pops, 
+                            levels=c("FK", "BUS", "PO", "TG",
+                                     "MEL", "NEL", "RAV", "PLY",
+                                     "SB", "TB", "HB",
+                                     "KNY", "PE", "EL"))
 
-mean_Ar <- mean_Ar %>% 
+crob_mean_Ar <- crob_mean_Ar %>% 
   arrange(pops) %>% 
-  add_column(group = c(rep("Native", 4), rep("Introduced", 16)))
+  add_column(group = c(rep("Native", 4), rep("Introduced", 10)))
 
-(msqua_ar <- ggplot(mean_Ar, aes(x = pops, y = Ar)) +
-  geom_point(size = 4, aes(colour = group)) +
-  scale_color_manual(values = c("#2e9e8f", "#e9c166"),
-                     labels = c("Native", "Introduced")) +
-  labs(x = "Site names",
-       y = "Allelic richness") +
-  lims(y = c(0.9, 1.5)) +
-  theme_bw() +
-  theme(axis.text = element_text(size = 14),
-        axis.text.x = element_text(angle = 45,
-                                   vjust = 0.6),
-        panel.grid.minor = element_blank(),
-        panel.grid.major.x = element_blank(),
-        axis.title = element_markdown(size = 16),
-        axis.title.y = element_markdown(size = 16),
-        legend.title = element_blank(),
-        legend.position = c(0.85, 0.1),
-        legend.text = element_text(size = 10)))
+crob_mean_Ar$group <- factor(crob_mean_Ar$group, 
+                             levels=c("Native", "Introduced"))
 
-msqua_ar + crob_ar
-
-ggsave(paste0("both_ar_values",
-              format(Sys.time(), "%m%Y"),
-              ".png"),
-       width = 12,
-       height = 6,
-       dpi = 320,
-       type = "cairo-png")
-
-
-# AMOVA -------------------------------------------------------------------
-
-popgen_stats <- divBasic("../adegenet/microcosmus/data/msqua_neutral.gen", outfile = NULL, gp = 3, 
-                         bootstraps = 100)
+(crob_ar <- ggplot(crob_mean_Ar, aes(x = pops, y = Ar)) +
+    geom_point(size = 4, aes(colour = group)) +
+    scale_color_manual(values = c("#cc99ff", "#e9c166"),
+                       labels = c("Putatively native", "Introduced")) +
+    labs(x = "Site names",
+         y = "Allelic richness") +
+    lims(y = c(0.9, 1.5)) +
+    theme_bw() +
+    theme(axis.text = element_text(size = 14),
+          axis.text.x = element_text(angle = 45,
+                                     vjust = 0.6),
+          panel.grid.minor = element_blank(),
+          panel.grid.major.x = element_blank(),
+          axis.title = element_markdown(size = 16),
+          axis.title.y = element_markdown(size = 16),
+          legend.title = element_blank(),
+          legend.position = c(0.85, 0.1),
+          legend.text = element_text(size = 10)))
